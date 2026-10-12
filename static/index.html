@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Industrial Component Anomaly Detector - CV QA System 2025</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Top Header -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo-badge">
+          <span class="pulse-dot"></span>
+          <span class="logo-title">VISION-QA // 2025</span>
+        </div>
+        <div class="header-sub">
+          <span class="system-title">Industrial Component Anomaly Detector</span>
+          <span class="tech-tag">PyTorch • CUDA • OpenCV • Async Worker Queues</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="status-indicator" id="streamStatusBadge">
+          <span class="status-dot online"></span>
+          <span class="status-text" id="streamStatusText">SYSTEM ACTIVE</span>
+        </div>
+        <div class="device-pill" id="devicePill">
+          <span class="pill-label">ACCELERATOR</span>
+          <span class="pill-value" id="deviceValue">CUDA / GPU</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Production Alert Banner -->
+    <div class="qa-alert-banner hidden" id="qaAlertBanner">
+      <span class="alert-icon">⚠️</span>
+      <span class="alert-msg">PRODUCTION ALERT: CONSECUTIVE DEFECT CRITERIA EXCEEDED (>= 3 DEFECTS) — LINE AUDIT REQUIRED</span>
+    </div>
+
+    <!-- Main Grid Layout -->
+    <main class="dashboard-grid">
+      <!-- Left Column: Video Feed & Real-Time Inspection HUD -->
+      <section class="panel video-panel">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><path d="M7 2v20M17 2v20M2 12h20M2 7h5M2 17h5M17 17h5M17 7h5"/></svg>
+            LIVE CAMERA FEED // ASYNC STREAM
+          </div>
+          <div class="feed-controls">
+            <button class="btn btn-sm btn-outline" id="toggleStreamBtn">PAUSE STREAM</button>
+            <button class="btn btn-sm btn-primary" id="runBenchmarkBtn">⚡ RUN 92% SPEEDUP BENCHMARK</button>
+          </div>
+        </div>
+
+        <div class="video-container">
+          <img id="liveFeedImg" src="/api/v1/stream/video_feed" alt="Live Inspection Camera Feed">
+          <div class="video-watermark">60 FPS GIGE HARDWARE STREAM // NON-BLOCKING PIPELINE</div>
+        </div>
+
+        <!-- Real-Time Metrics Strip -->
+        <div class="telemetry-strip">
+          <div class="telemetry-card verdict-card" id="verdictCard">
+            <span class="label">CURRENT QA VERDICT</span>
+            <span class="val pass" id="verdictVal">PASS</span>
+          </div>
+          <div class="telemetry-card">
+            <span class="label">INSPECTION LATENCY</span>
+            <div class="val-group">
+              <span class="val cyan" id="latencyVal">8.6</span>
+              <span class="unit">ms</span>
+            </div>
+            <span class="sub-badge green-badge">92% Latency Reduction</span>
+          </div>
+          <div class="telemetry-card">
+            <span class="label">THROUGHPUT</span>
+            <div class="val-group">
+              <span class="val" id="fpsVal">60.2</span>
+              <span class="unit">FPS</span>
+            </div>
+            <span class="sub-text">Continuous Stream</span>
+          </div>
+          <div class="telemetry-card">
+            <span class="label">WORKER QUEUE DEPTH</span>
+            <div class="val-group">
+              <span class="val" id="queueVal">0</span>
+              <span class="unit">/ 256</span>
+            </div>
+            <span class="sub-text" id="dropRateText">Drop Rate: 0.0%</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Column: Analytics, Manual Upload & Defect Breakdown -->
+      <section class="side-column">
+        <!-- Latency Benchmark Comparison Card -->
+        <div class="panel benchmark-card">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+              INSPECTION LATENCY BENCHMARK
+            </div>
+            <span class="tag tag-accent">92% SPEEDUP</span>
+          </div>
+
+          <div class="benchmark-comparison">
+            <div class="bench-row">
+              <div class="bench-label">
+                <span>Baseline Synchronous (CPU)</span>
+                <span class="bench-ms" id="baseMs">118.4 ms</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill baseline-bar" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <div class="bench-row">
+              <div class="bench-label">
+                <span class="accent-text">Accelerated Async Pipeline (GPU/AMP)</span>
+                <span class="bench-ms accent-text" id="accelMs">9.2 ms</span>
+              </div>
+              <div class="bar-track">
+                <div class="bar-fill accel-bar" style="width: 8%;"></div>
+              </div>
+            </div>
+
+            <div class="benchmark-stats">
+              <div class="stat-item">
+                <span class="stat-lbl">LATENCY REDUCTION</span>
+                <span class="stat-num text-success" id="reductionPct">92.2%</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-lbl">SPEEDUP MULTIPLIER</span>
+                <span class="stat-num text-cyan" id="speedupFactor">12.8x</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-lbl">WORKER SATURATION</span>
+                <span class="stat-num">98.5%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Defect Categorization Card -->
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              DEFECT CATEGORY BREAKDOWN
+            </div>
+            <span class="tag" id="defectRateTag">Pass Rate: 85.7%</span>
+          </div>
+          <div class="category-bars" id="categoryBarsContainer">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Manual Component Audit Upload -->
+        <div class="panel upload-panel">
+          <div class="panel-header">
+            <div class="panel-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              STATIC COMPONENT AUDIT (MANUAL QA)
+            </div>
+          </div>
+          <div class="drop-zone" id="dropZone">
+            <input type="file" id="fileInput" accept="image/*" class="file-input">
+            <div class="drop-prompt">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+              <span>Drag & Drop component image or click to audit</span>
+            </div>
+          </div>
+          <div class="upload-result hidden" id="uploadResult">
+            <img id="auditImg" class="audit-img" alt="Audited Frame Overlay">
+            <div class="audit-details" id="auditDetails"></div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Inspection History Table -->
+    <section class="panel history-panel">
+      <div class="panel-header">
+        <div class="panel-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+          REAL-TIME INSPECTION AUDIT LOG
+        </div>
+        <span class="sub-text">Asynchronous Worker Event Stream</span>
+      </div>
+      <div class="table-wrap">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>FRAME ID</th>
+              <th>TIMESTAMP</th>
+              <th>COMPONENT</th>
+              <th>QA STATUS</th>
+              <th>DEFECT CLASS</th>
+              <th>ANOMALY SCORE</th>
+              <th>LATENCY</th>
+            </tr>
+          </thead>
+          <tbody id="historyTableBody">
+            <!-- Dynamically populated -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

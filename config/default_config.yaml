@@ -1,0 +1,39 @@
+# Industrial Component Anomaly Detector Configuration
+system:
+  app_name: "Industrial Component Anomaly Detector - CV QA System"
+  version: "2025.1.0"
+  log_level: "INFO"
+  host: "0.0.0.0"
+  port: 8000
+
+hardware:
+  camera_type: "simulator" # options: 'simulator', 'opencv', 'rtsp'
+  camera_id: 0
+  rtsp_url: ""
+  frame_width: 640
+  frame_height: 480
+  target_fps: 60
+  buffer_size: 128
+
+inference:
+  device: "cuda" # 'cuda' or 'cpu' (falls back automatically if cuda unavailable)
+  use_amp: true # Automatic Mixed Precision (fp16)
+  model_type: "dual_head_cnn" # 'dual_head_cnn', 'feature_reconstruction', 'patchcore'
+  anomaly_threshold: 0.65
+  batch_size: 8
+  max_batch_wait_ms: 5.0
+  warmup_iterations: 10
+  defect_categories:
+    - "normal"
+    - "surface_scratch"
+    - "structural_crack"
+    - "void_porosity"
+    - "corrosion_spot"
+    - "dimensional_misalignment"
+
+pipeline:
+  worker_concurrency: 4
+  queue_max_size: 256
+  drop_policy: "drop_oldest" # 'drop_oldest' or 'reject_new'
+  metrics_window_seconds: 60
+  alert_on_consecutive_defects: 3
